@@ -1,12 +1,21 @@
 package com.example.parstagram;
 
+import android.util.Log;
+
+import com.parse.FindCallback;
+import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.security.Key;
+import java.util.List;
 
+@ParseClassName(("Post"))
 public class Post extends ParseObject {
+    public static final String TAG = "Post";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
