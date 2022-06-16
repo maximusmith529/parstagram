@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -34,21 +36,26 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
     private EditText etDescription;
-    private Button btnCaptureImage;
+    private Button btnCaptureImage, btnSubmit;
     private ImageView ivPostImage;
-    private Button btnSubmit;
+    private ImageButton ibLogout, ibToFeed;
+
     private File photoFile;
     public String photoFileName = "photo.jpg";
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        context = this;
+        ibLogout = findViewById(R.id.ibLogout);
         etDescription = findViewById(R.id.etDescription);
         btnCaptureImage = findViewById(R.id.btTakePicture);
         ivPostImage = findViewById(R.id.ivImage);
         btnSubmit = findViewById(R.id.btSubmit);
+        ibToFeed = findViewById(R.id.ibToFeed);
 
         btnCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +64,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ibLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout(v);
+            }
+        });
+
+        ibToFeed.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoFeed();
+            }
+        }));
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +94,12 @@ public class MainActivity extends AppCompatActivity {
                 
             }
         });
+    }
+
+    private void gotoFeed() {
+        Intent i = new Intent(context, FeedActivity.class);
+        startActivity(i);
+        finish();
     }
 
     private void launchCamera() {
@@ -167,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 for(Post post : posts){
-                    Log.i(TAG, "Post" + post.getKeyDescription() + post.getUser().getUsername());
+                    Log.i(TAG, "Post" + post.getDescription() + post.getUser().getUsername());
                 }
             }
         });
