@@ -9,14 +9,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.parstagram.Models.Post;
 import com.parse.ParseFile;
+
+import java.util.Date;
 
 public class PostDetailsActivity extends AppCompatActivity {
 
     public static final String TAG = "Detailed View";
     private TextView tvUsername;
     private ImageView ivImage;
-    private TextView tvDescription, tvDescriptionUsername;
+    private TextView tvDescription, tvDescriptionUsername, tvTimeStamp;
     private Post mPost;
     private ImageButton ibFavorite, ibDirect, ibComment, ibSavedPost;
 
@@ -28,6 +31,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         ivImage = findViewById(R.id.ivImage);
         tvDescription = findViewById(R.id.tvDescription);
         tvDescriptionUsername = findViewById(R.id.tvUsername2);
+        tvTimeStamp = findViewById(R.id.tvTimeStamp);
 
         ibFavorite = findViewById(R.id.ibFavorite);
         ibDirect = findViewById(R.id.ibDirect);
@@ -44,6 +48,8 @@ public class PostDetailsActivity extends AppCompatActivity {
         tvDescription.setText(post.getDescription());
         tvUsername.setText(post.getUser().getUsername());
         tvDescriptionUsername.setText(post.getUser().getUsername());
+        Date createdAt = post.getCreatedAt();
+        tvTimeStamp.setText(post.getDate());
         ParseFile image = post.getImage();
         if (image != null) {
             Glide.with(this).load(image.getUrl()).into(ivImage);

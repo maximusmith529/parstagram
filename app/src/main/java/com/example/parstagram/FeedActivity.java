@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.example.parstagram.Adapters.PostsAdapter;
+import com.example.parstagram.Models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;

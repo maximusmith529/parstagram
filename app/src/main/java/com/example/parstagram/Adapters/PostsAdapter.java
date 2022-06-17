@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.parstagram.Post;
+import com.example.parstagram.Models.Post;
 import com.example.parstagram.PostDetailsActivity;
 import com.example.parstagram.R;
 import com.parse.ParseFile;

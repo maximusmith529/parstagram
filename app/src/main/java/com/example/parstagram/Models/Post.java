@@ -1,4 +1,4 @@
-package com.example.parstagram;
+package com.example.parstagram.Models;
 
 import android.util.Log;
 
@@ -11,6 +11,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.security.Key;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @ParseClassName(("Post"))
@@ -19,6 +21,7 @@ public class Post extends ParseObject {
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
+    public static final String DATE = "createdAt";
 
     public String getDescription(){
         return getString(KEY_DESCRIPTION);
@@ -39,9 +42,13 @@ public class Post extends ParseObject {
     public ParseUser getUser(){
         return getParseUser(KEY_USER);
     }
-
     public void setUser(ParseUser user){
         put(KEY_USER, user);
     }
 
+    public String getDate(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+        String date = formatter.format(this.getCreatedAt());
+
+        return date; }
 }
