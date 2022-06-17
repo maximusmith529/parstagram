@@ -3,9 +3,13 @@ package com.example.parstagram;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.example.parstagram.Adapters.PostsAdapter;
 import com.parse.FindCallback;
@@ -21,6 +25,8 @@ public class FeedActivity extends AppCompatActivity {
     private RecyclerView rvPosts;
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
+    private ImageButton ibBack;
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +34,43 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
 
         rvPosts = findViewById(R.id.rvPosts);
-
+        ibBack = findViewById(R.id.ibBack);
         // initialize the array that will hold posts and create a PostsAdapter
         allPosts = new ArrayList<>();
         adapter = new PostsAdapter(this, allPosts);
-
+        // Lookup the swipe container view
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                queryPosts();
+            }
+        });
         // set the adapter on the recycler view
         rvPosts.setAdapter(adapter);
         // set the layout manager on the recycler view
         rvPosts.setLayoutManager(new LinearLayoutManager(this));
         // query posts from Parstagram
         queryPosts();
+
+        ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toMain();
+            }
+        });
+
+
+    }
+
+    private void toMain() {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+        finish();
     }
 
     private void queryPosts() {
@@ -65,8 +97,13 @@ public class FeedActivity extends AppCompatActivity {
                     Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
                 }
 
-                // save received posts to list and notify adapter of new data
-                allPosts.addAll(posts);
+                // Remember to CLEAR OUT old items before appending in the new ones
+                adapter.clear();
+                // ...the data has come back, add new items to your adapter...
+                adapter.addAll(posts);
+                // Now we call setRefreshing(false) to signal refresh has finished
+                swipeContainer.setRefreshing(false);
+
                 Log.i(TAG, "Num of Posts: " + allPosts.size());
                 adapter.notifyDataSetChanged();
             }

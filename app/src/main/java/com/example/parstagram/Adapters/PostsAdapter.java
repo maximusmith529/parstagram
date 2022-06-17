@@ -1,6 +1,7 @@
 package com.example.parstagram.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +22,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     private final Context context;
     private final List<Post> posts;
+    public static final String TAG = "Posts Adapter";
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_post, parent, false);
+        Log.d(TAG, "created viewholder");
+
         return new ViewHolder(view);
     }
 
@@ -42,7 +46,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return 0;
+        return posts.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -66,6 +70,18 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             if (image != null) {
                 Glide.with(context).load(image.getUrl()).into(ivImage);
             }
+            Log.d(TAG, "Bind Ran \nUser:" + post.getUser() + "\nDescription: "+post.getDescription());
         }
+    }
+    // Clean all elements of the recycler
+    public void clear() {
+        posts.clear();
+        notifyDataSetChanged();
+    }
+
+    // Add a list of items -- change to type used
+    public void addAll(List<Post> list) {
+        posts.addAll(list);
+        notifyDataSetChanged();
     }
 }

@@ -1,8 +1,10 @@
 package com.example.parstagram;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -39,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnCaptureImage, btnSubmit;
     private ImageView ivPostImage;
     private ImageButton ibLogout, ibToFeed;
-
+    private BottomNavigationView bottomNavigationView;
     private File photoFile;
     public String photoFileName = "photo.jpg";
     private Context context;
@@ -56,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         ivPostImage = findViewById(R.id.ivImage);
         btnSubmit = findViewById(R.id.btSubmit);
         ibToFeed = findViewById(R.id.ibToFeed);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         btnCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +97,25 @@ public class MainActivity extends AppCompatActivity {
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 SavePost(description, currentUser, photoFile);
                 
+            }
+        });
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment;
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        Toast.makeText(MainActivity.this, "Home", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.compose:
+                        Toast.makeText(MainActivity.this, "Compose", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.profile:
+                    default:
+                        Toast.makeText(MainActivity.this, "Profile", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
             }
         });
     }
