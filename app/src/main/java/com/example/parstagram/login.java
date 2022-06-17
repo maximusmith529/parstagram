@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
@@ -21,6 +22,7 @@ public class login extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassword;
     private Button ibConfirm;
+    private TextView tvSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class login extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         ibConfirm = findViewById(R.id.btnConfirm);
+        tvSignup = findViewById(R.id.tvSignup);
 
         ibConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +47,14 @@ public class login extends AppCompatActivity {
             }
 
 
+        });
+        tvSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "Signup clicked");
+                goSignup();
+
+            }
         });
     }
     private void loginUser(String user, String pass) {
@@ -61,6 +72,12 @@ public class login extends AppCompatActivity {
                 
             }
         });
+    }
+
+    private void goSignup(){
+        Intent i = new Intent(this, signupActivity.class);
+        startActivity(i);
+        finish();
     }
 
     private void goMainActivity() {
